@@ -12,13 +12,17 @@
   <link rel="icon" href="/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <link rel="manifest" href="/manifest.webmanifest">
+  <script src="/theme.js"></script>
   <link rel="stylesheet" href="/styles.css">
   <script type="module" src="/app.js"></script>
 </head>
 <body>
   <header class="header">
     <a class="brand" href="#today" aria-label="My health diary, today"><img src="/icon.svg" width="38" height="38" alt=""><span>My health diary<small>A little note. A clearer picture.</small></span></a>
-    <button id="settings-button" class="icon-button" aria-label="Settings and backup" title="Settings and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg></button>
+    <div class="header-actions">
+      <button type="button" id="theme-toggle" class="icon-button" aria-label="Switch to light mode" title="Switch to light mode"><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/></svg><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 14.5A8.8 8.8 0 0 1 9.5 3.5a8.8 8.8 0 1 0 11 11Z"/></svg></button>
+      <button id="settings-button" class="icon-button" aria-label="Settings and backup" title="Settings and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg></button>
+    </div>
   </header>
   <main>
     <div class="topline"><span class="device-note">Only on this device</span><span id="connection-status" role="status">Preparing offline access…</span></div>
@@ -75,6 +79,7 @@
     <footer class="footer">A place to remember, at your own pace.</footer>
   </main>
   <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-heading"><h2 id="settings-title">Your diary</h2><button class="icon-button" id="close-settings" aria-label="Close settings">×</button></div><div class="dialog-body">
+    <section aria-labelledby="appearance-title"><h3 id="appearance-title">Appearance</h3><div class="button-row theme-choices" role="group" aria-labelledby="appearance-title"><button type="button" class="secondary" data-theme-choice="light" aria-pressed="false">Light mode</button><button type="button" class="secondary" data-theme-choice="dark" aria-pressed="true">Dark mode</button></div><p class="small" id="theme-status" role="status">Your choice is remembered on this device.</p></section>
     <section><h3>Keep a copy</h3><p>Entries, saved visits, and prescriptions stay on this device and don’t sync. They are all included in your backup. Download one regularly and before changing phones or clearing browser data.</p><div class="button-row"><button id="export-backup" class="primary">Download backup</button><button id="import-backup" class="secondary">Restore backup</button></div><input type="file" id="import-file" accept=".json,application/json" hidden><p class="small" id="backup-date">No backup downloaded yet.</p><p class="small">Backup files contain your health notes and prescriptions. Keep them somewhere private.</p></section>
     <section><h3>Use it like an app</h3><button id="install-app" class="secondary" hidden>Add to home screen</button><p><strong>iPhone:</strong> open this page in Safari, tap Share, then Add to Home Screen.</p><p><strong>Android:</strong> open this page in Chrome, tap the menu, then Install app or Add to Home screen.</p><p class="small">Open it online once and wait for “Ready offline”. Then you can write and read without internet. Use the same browser or installed app for your entries.</p></section>
     <section><h3>Just for you</h3><p>No account, ads, or analytics. Your entries are not sent to a server. Anyone using this unlocked browser can read them, so use your phone’s screen lock. Avoid private/incognito mode for your diary.</p></section>

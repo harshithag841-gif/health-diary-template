@@ -33,6 +33,12 @@ Diary entries, visits, and prescription files are stored in **IndexedDB in your 
 
 Local storage is not a promise of absolute security. This app does not encrypt device storage or exported backups. Browser data can be cleared or evicted; private browsing may not retain it. Use a device lock and keep regular backups somewhere private. Your hosting provider still receives ordinary connection metadata such as IP addresses when it serves the app. Anyone who controls your deployment or scripts on the same origin can change the code; review changes before updating. This is a personal record keeper, not medical advice or an emergency service.
 
+## Light and dark mode
+
+Dark mode is the default. Use the sun/moon button next to Settings, or open **Settings → Appearance**, to choose Light mode or Dark mode. The choice is remembered in this browser, works offline, and applies to daily notes, past entries, doctor visits, prescription controls, and settings. Original prescription images are displayed without changing their colors. Printed appointment reports always use light styling.
+
+The display preference is separate from health records and backups. Switching themes does not change saved notes or files. After an update, open the app online, close all diary tabs and installed-app windows, then reopen to activate the new offline version.
+
 ## Run locally
 
 Requires Node.js 22 or newer. The app has no runtime dependencies and needs no npm install.

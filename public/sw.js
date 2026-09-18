@@ -1,5 +1,5 @@
 const CACHE = 'health-diary-__BUILD_VERSION__';
-const ASSETS = ['/', '/index.html', '/styles.css', '/app.js', '/db.js', '/model.js', '/visits.js', '/visit-model.js', '/icon.svg', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/maskable-512.png'];
+const ASSETS = ['/', '/index.html', '/styles.css', '/theme.js', '/app.js', '/db.js', '/model.js', '/visits.js', '/visit-model.js', '/icon.svg', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/maskable-512.png'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)));
   // New versions wait for the old app to close, avoiding mixed versions or lost edits.

@@ -10,7 +10,7 @@ for(const name of files.sort()) {
   if(/\.[a-z]+$/.test(name))hash.update(await readFile(new URL(name,source)));
 }
 JSON.parse(await readFile(new URL('manifest.webmanifest',source),'utf8'));
-for(const name of ['index.html','styles.css','app.js','db.js','model.js','visits.js','visit-model.js','icon.svg','icons/icon-192.png','icons/icon-512.png','icons/maskable-512.png'])await readFile(new URL(name,source));
+for(const name of ['index.html','styles.css','theme.js','app.js','db.js','model.js','visits.js','visit-model.js','icon.svg','icons/icon-192.png','icons/icon-512.png','icons/maskable-512.png'])await readFile(new URL(name,source));
 await rm(output,{recursive:true,force:true});await mkdir(output,{recursive:true});await cp(source,output,{recursive:true});
 const sw=await readFile(new URL('sw.js',source),'utf8');
 await writeFile(new URL('sw.js',output),sw.replace('__BUILD_VERSION__',hash.digest('hex').slice(0,16)));
