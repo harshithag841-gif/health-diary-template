@@ -10,7 +10,8 @@ const base=process.env.TEST_URL||'http://localhost:4173';
 const profile=await mkdtemp(join(tmpdir(),'diary-visits-'));
 const output=new URL('../test-results/',import.meta.url);await mkdir(output,{recursive:true});
 const photo=await readFile(new URL('../public/icons/icon-192.png',import.meta.url));
-const pdf=Buffer.from('%PDF-1.4\n1 0 obj\n<< /Type /Catalog >>\nendobj\n%%EOF\n');
+// A complete one-page PDF with pages, content, and an xref table.
+const pdf=Buffer.from("%PDF-1.4\n1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 300 200] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>\nendobj\n4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n5 0 obj\n<< /Length 56 >>\nstream\nBT /F1 12 Tf 20 100 Td (Sample prescription only) Tj ET\nendstream\nendobj\nxref\n0 6\n0000000000 65535 f \n0000000009 00000 n \n0000000058 00000 n \n0000000115 00000 n \n0000000241 00000 n \n0000000311 00000 n \ntrailer\n<< /Size 6 /Root 1 0 R >>\nstartxref\n416\n%%EOF\n");
 const uploads=[{name:'prescription-photo.png',mimeType:'image/png',buffer:photo},{name:'prescription.pdf',mimeType:'application/pdf',buffer:pdf}];
 let context,page;
 const errors=[],requests=[];
