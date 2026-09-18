@@ -37,7 +37,7 @@ Local storage is not a promise of absolute security. This app does not encrypt d
 
 Dark mode is the default. Use the sun/moon button next to Settings, or open **Settings → Appearance**, to choose Light mode or Dark mode. The choice is remembered in this browser, works offline, and applies to daily notes, past entries, doctor visits, prescription controls, and settings. Original prescription images are displayed without changing their colors. Printed appointment reports always use light styling.
 
-The display preference is separate from health records and backups. Switching themes does not change saved notes or files. After an update, open the app online, close all diary tabs and installed-app windows, then reopen to activate the new offline version.
+The display preference is separate from health records and backups. Switching themes does not change saved notes or files. Use **Settings → App updates → Check for updates**, then **Update now** when a new version is ready. Finish any visit edits and close other diary windows first. Notes are saved before the update reloads the app. Older versions without this menu need one online reload, then all diary tabs and app windows closed and reopened at the same address.
 
 ## Run locally
 
@@ -50,7 +50,7 @@ node scripts/build.mjs
 node scripts/serve.mjs
 ```
 
-Open `http://localhost:4173`. Build again after changes. Service-worker updates wait until old app windows close, protecting in-progress edits. Close all diary tabs and installed-app windows, then reopen online to activate an update.
+Open `http://localhost:4173`. Build again after changes. Use Settings → App updates to check for a new version. Update now saves notes and reloads only after visit edits are finished and other diary windows are closed. Closing and reopening all app windows also activates downloaded updates.
 
 ## Implementation
 
@@ -76,6 +76,7 @@ The browser checks use artificial data in an isolated Chrome profile. With Chrom
 ```sh
 node scripts/smoke.mjs
 node scripts/visits-smoke.mjs
+node scripts/updates-smoke.mjs
 ```
 
 Set `PLAYWRIGHT_MODULE_ROOT` to the directory containing Playwright if it is not locally installed. Tests cover mobile layouts, offline restarts, autosave, search, reports, backup round trips, IDB migration, prescription bytes, deletion cleanup, invalid input, and conflicting writes. Test results are ignored by Git.
@@ -85,3 +86,5 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and [SECURITY.md](SECURITY.md
 ## License
 
 [MIT](LICENSE). You can use, modify, and share the template with the license notice retained.
+
+The update checks simulate a new deployment on the local server, verify the waiting notice and protection for unsaved visits/other tabs, and confirm that notes, prescription bytes and theme preference survive the update and an offline reload. Run these checks individually: the update test temporarily modifies and then restores files in `dist/`.

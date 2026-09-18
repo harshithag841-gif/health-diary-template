@@ -2,6 +2,7 @@ import { openDatabase, getEntry, allEntries, putEntry, deleteEntry, allVisits, r
 import { fields, moodNames, localDate, validDate, prettyDate, blankEntry, hasContent, validateBackup, makeReportText } from './model.js';
 import { initVisits, renderVisits, hasUnsavedVisit, setVisitsReady } from './visits.js';
 import { exportVisits, parseVisitBackup, MAX_BACKUP_BYTES, readableTime } from './visit-model.js';
+import { initUpdates, watchUpdates } from './updates.js';
 
 const $ = id => document.getElementById(id);
 let current = blankEntry(localDate()), dirty = false, generation = 0, saveTimer, toastTimer, installPrompt, offlineReady = false;
@@ -104,7 +105,7 @@ async function renderJournal() {
     $('entries-list').replaceChildren();
     if (!entries.length) {
       const empty = element('div',undefined,'empty');
-      empty.append(element('h2',query ? 'No matching entries' : 'Your story starts with today'),element('p',query ? 'Try a different word or date.' : 'Even a few words can help you remember later.'));
+      empty.append(element('h2',query ? 'No matching entries' : 'No entries in this browser yet'),element('p',query ? 'Try a different word or date.' : 'Notes do not sync between your phone and computer. Open the same browser or installed app where you wrote them, or restore your backup in Settings.'));
       if (!query) { const link = element('a','Write your first note','primary'); link.href='#today'; empty.append(link); }
       $('entries-list').append(empty);
     }
@@ -175,9 +176,10 @@ async function setupOffline() {
   try {
     // An already installed worker remains usable even if its update request fails offline.
     const existing = await navigator.serviceWorker.getRegistration('/');
-    if (existing?.active) { offlineReady=true; connectionStatus(); }
+    if (existing?.active) { offlineReady=true; connectionStatus(); watchUpdates(existing); }
     if (!navigator.onLine && offlineReady) return;
-    const registration = await navigator.serviceWorker.register('/sw.js');
+    const registration = await navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' });
+    watchUpdates(registration);
     await navigator.serviceWorker.ready;
     offlineReady=true;connectionStatus();
     registration.update().catch(()=>{});
@@ -260,6 +262,7 @@ window.addEventListener('appinstalled',()=>{$('install-app').hidden=true;toast('
 if(channel)channel.onmessage=async event=>{if(!dirty&&(event.data.date===current.date||event.data.date==='all'))await loadDate(current.date);if(activeView==='journal')renderJournal();if(activeView==='doctor'){renderVisits();renderReport();}};
 
 async function init() {
+  initUpdates({prepare:async()=>storageReady && !hasUnsavedVisit() && await flush()});
   initVisits({toast,confirmAction,onChange:async()=>{channel?.postMessage({date:'visits'});if(activeView==='doctor')await renderReport();}});
   $('entry-form').inert=true;
   const today=new Date(), from=new Date(today);from.setDate(today.getDate()-29);$('report-from').value=localDate(from);$('report-to').value=localDate(today);

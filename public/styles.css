@@ -152,3 +152,5 @@ input::placeholder,textarea::placeholder{color:var(--placeholder);opacity:1}
 }
 body,.report-content{background:#fff;color:#111}
 }
+
+.update-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--selected);border:1px solid var(--line-strong);padding:16px;border-radius:12px;margin-bottom:24px}.update-banner p{margin:0;font-size:.87rem;color:var(--text)}.update-banner button{flex-shrink:0}.diary-address{overflow-wrap:anywhere;font-size:.8rem}body[aria-busy="true"]{cursor:progress}@media(max-width:480px){.update-banner{align-items:stretch;flex-direction:column}}@media print{.update-banner{display:none!important}}

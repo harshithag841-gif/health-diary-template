@@ -1,0 +1,42 @@
+import {createRequire} from 'node:module';
+import assert from 'node:assert/strict';
+import {readFile,writeFile,mkdtemp,rm} from 'node:fs/promises';
+import {join} from 'node:path';import {tmpdir} from 'node:os';
+import {fileURLToPath} from 'node:url';
+const require=createRequire(process.env.PLAYWRIGHT_MODULE_ROOT?join(process.env.PLAYWRIGHT_MODULE_ROOT,'package.json'):import.meta.url);
+const {chromium}=require('playwright');
+// Run against the local server only: simulate a deployment in the ignored build folder.
+const base='http://localhost:4173', dist=new URL('../dist/',import.meta.url);
+const swFile=new URL('sw.js',dist),htmlFile=new URL('index.html',dist);
+const originalSW=await readFile(swFile,'utf8'),originalHTML=await readFile(htmlFile,'utf8');
+const profile=await mkdtemp(join(tmpdir(),'diary-updates-'));let context;
+const errors=[];
+try{
+ context=await chromium.launchPersistentContext(profile,{channel:'chrome',headless:true,viewport:{width:390,height:844}});
+ const page=context.pages()[0];page.on('pageerror',error=>errors.push(error.message));
+ await page.goto(base);await page.getByText('Ready offline',{exact:true}).waitFor();await page.waitForFunction(()=>!!navigator.serviceWorker.controller);
+ await page.locator('#notes').fill('Sample note before an app update.');await page.getByText('Saved on this device ✓',{exact:true}).waitFor();
+ await page.locator('#theme-toggle').click();assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
+ await page.locator('[href="#doctor"]').click();await page.locator('#visit-editor summary').click();await page.locator('#visit-doctor').fill('Dr. Update Example');await page.locator('#prescription-files').setInputFiles(fileURLToPath(new URL('../public/icons/icon-192.png',import.meta.url)));await page.locator('#save-visit').click();await page.locator('.visit-card').waitFor();
+ const filesBefore=await page.evaluate(async()=>{const {allVisits,getPrescription}=await import('/db.js');const visits=await allVisits();return {visits,bytes:Array.from(new Uint8Array(await(await getPrescription(visits[0].attachments[0].id)).arrayBuffer()))};});
+ await writeFile(swFile,originalSW.replace(/health-diary-([a-f0-9]+)/,'health-diary-$1-update-test'));
+ await writeFile(htmlFile,originalHTML.replace(/Version [\d.]+/,'Version update-test'));
+ await page.locator('#settings-button').click();await page.locator('#check-updates').click();await page.locator('#apply-update-settings').waitFor({state:'visible'});
+ assert.ok(!(await page.locator('#settings-dialog').innerText()).includes('Version update-test'));
+ await page.locator('#close-settings').click();
+ await page.locator('#visit-editor summary').click();await page.locator('#visit-doctor').fill('Unsaved sample visit');await page.locator('#apply-update').click();await page.getByText('Save or cancel any visit changes and make sure your notes are saved, then try updating again.',{exact:true}).first().waitFor();
+ assert.equal(await page.locator('#visit-doctor').inputValue(),'Unsaved sample visit');assert.equal(await page.locator('body').evaluate(e=>e.inert),false);
+ await page.locator('#cancel-visit').click();await page.locator('#confirm-ok').click();
+ const other=await context.newPage();await other.goto(base);await other.getByText('Ready offline',{exact:true}).waitFor();
+ await page.locator('#apply-update').click();await page.locator('#update-message').filter({hasText:'Close your other diary tabs'}).waitFor();assert.equal(await page.locator('body').evaluate(e=>e.inert),false);await other.close();
+ console.log('PASS update notice; update waits for unsaved visits and other diary windows.');
+ await page.getByRole('link',{name:'Write a note',exact:true}).click();await page.locator('#today-view').waitFor({state:'visible'});if(!await page.locator('#notes').isVisible())await page.locator('#notes-details summary').click();
+ await page.locator('#notes').fill('Latest sample note immediately before updating.');
+ await Promise.all([page.waitForEvent('load'),page.locator('#apply-update').click()]);
+ await page.getByText('Saved on this device ✓',{exact:true}).waitFor();assert.equal(await page.locator('#notes').inputValue(),'Latest sample note immediately before updating.');assert.equal(await page.locator('html').getAttribute('data-theme'),'light');
+ await page.locator('#settings-button').click();assert.ok((await page.locator('#settings-dialog').innerText()).includes('Version update-test'));await page.locator('#close-settings').click();
+ const filesAfter=await page.evaluate(async()=>{const {allVisits,getPrescription}=await import('/db.js');const visits=await allVisits();return {visits,bytes:Array.from(new Uint8Array(await(await getPrescription(visits[0].attachments[0].id)).arrayBuffer()))};});assert.deepEqual(filesAfter,filesBefore);
+ await context.setOffline(true);await page.reload();await page.getByText('Saved on this device ✓',{exact:true}).waitFor();assert.equal(await page.locator('#notes').inputValue(),'Latest sample note immediately before updating.');
+ await page.locator('#settings-button').click();await page.locator('#check-updates').click();assert.ok((await page.locator('#update-status').innerText()).includes('Connect to the internet'));assert.deepEqual(errors,[]);
+ console.log('PASS update applies after saving notes, preserves visits/prescription bytes/theme, and reopens offline.');
+}finally{await context?.close();await writeFile(swFile,originalSW);await writeFile(htmlFile,originalHTML);await rm(profile,{recursive:true,force:true});}
