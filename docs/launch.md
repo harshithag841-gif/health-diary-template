@@ -4,8 +4,8 @@ A simple, local-first diary for remembering the details between doctor visits.
 
 | What you want | Open this |
 | --- | --- |
-| Try the app without setup | [Interactive demo](https://health-diary-demo-eight.vercel.app/) |
-| See a quick walkthrough | [Captioned demo video](https://harshithagangappa.com/products/health-diary-prd#video) |
+| Watch the product demo | [41-second demo video](https://harshithagangappa.com/products/health-diary-demo) |
+| Optionally explore fictional records | [Interactive sample app](https://health-diary-demo-eight.vercel.app/) |
 | Understand the product and implementation | [HTML PRD](https://harshithagangappa.com/products/health-diary-prd) |
 | Create your own repository | [Use this template](https://github.com/harshithag841-gif/health-diary-template/generate) |
 | Fork and contribute | [Fork the code](https://github.com/harshithag841-gif/health-diary-template/fork) |
@@ -14,7 +14,7 @@ A simple, local-first diary for remembering the details between doctor visits.
 | Prepare a pull request | [Contribution guide](../CONTRIBUTING.md) |
 | Explore more products | [Harshitha Gangappa / Products](https://harshithagangappa.com/#products) |
 
-The demo opens immediately, uses fictional records, and resets on refresh. Forking copies the source; it does not deploy an app. To keep real notes, deploy your own copy. Use the template instead of a public fork if you want a private source repository.
+The website’s demo link opens the captioned video. The optional sample app is a separate interactive preview with fictional records; its edits reset on refresh. Forking copies the source; it does not deploy an app. To keep real notes, deploy your own copy. Use the template instead of a public fork if you want a private source repository.
 
 The public template includes daily notes and collapse controls, search, doctor visits with dates and times, prescription photos/PDFs, appointment reports, offline use, light/dark mode, and backup/restore. It starts empty and stores records in your browser. It has no accounts, health-data backend, analytics, AI processing or automatic device sync. The author's separate personal edition is not part of the public template or demo.
 

@@ -2,7 +2,7 @@
 
 A small, local-first health diary for remembering what happened between doctor visits. Write on your phone, attach prescriptions, and take a useful summary to your next appointment.
 
-**[Try the interactive demo](https://health-diary-demo-eight.vercel.app/)** · **[Watch the short demo](https://harshithagangappa.com/products/health-diary-prd#video)** · **[Read the HTML PRD](https://harshithagangappa.com/products/health-diary-prd)** · **[Use this template](https://github.com/harshithag841-gif/health-diary-template/generate)** · **[Fork the code](https://github.com/harshithag841-gif/health-diary-template/fork)** · **[Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fharshithag841-gif%2Fhealth-diary-template)**
+**[Watch the demo video](https://harshithagangappa.com/products/health-diary-demo)** · **[Explore the sample app](https://health-diary-demo-eight.vercel.app/)** · **[Read the HTML PRD](https://harshithagangappa.com/products/health-diary-prd)** · **[Use this template](https://github.com/harshithag841-gif/health-diary-template/generate)** · **[Fork the code](https://github.com/harshithag841-gif/health-diary-template/fork)** · **[Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fharshithag841-gif%2Fhealth-diary-template)**
 
 Built by [Harshitha Gangappa](https://harshithagangappa.com/#products). This is a clean, MIT-licensed template. It contains no personal diary records, prescriptions, credentials, or private deployment configuration.
 
@@ -26,7 +26,7 @@ Demo edits live only in memory in that page and reset on refresh or **Reset demo
 
 **Fork opens the code, not the running app.** To keep real notes, deploy your own copy below. An ordinary template build starts empty and stores your records in your browser. The demo’s sample data is included only when explicitly building the demo.
 
-Prefer a quick walkthrough? [Watch the captioned demo video](https://harshithagangappa.com/products/health-diary-prd#video). All records shown are fictional. The [launch guide](docs/launch.md) collects the demo, PRD, setup and contribution links.
+Prefer a quick walkthrough? [Watch the captioned demo video](https://harshithagangappa.com/products/health-diary-demo). All records shown are fictional. The [launch guide](docs/launch.md) collects the demo, PRD, setup and contribution links.
 
 ## Make your own copy
 
