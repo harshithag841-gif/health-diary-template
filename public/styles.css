@@ -154,3 +154,7 @@ body,.report-content{background:#fff;color:#111}
 }
 
 .update-banner{display:flex;align-items:center;justify-content:space-between;gap:16px;background:var(--selected);border:1px solid var(--line-strong);padding:16px;border-radius:12px;margin-bottom:24px}.update-banner p{margin:0;font-size:.87rem;color:var(--text)}.update-banner button{flex-shrink:0}.diary-address{overflow-wrap:anywhere;font-size:.8rem}body[aria-busy="true"]{cursor:progress}@media(max-width:480px){.update-banner{align-items:stretch;flex-direction:column}}@media print{.update-banner{display:none!important}}
+
+/* Keep the diary identity readable beside the controls on small phones. */
+.brand{min-width:0}.brand>span{min-width:0}.brand img,.header-actions{flex-shrink:0}
+@media(max-width:380px){.header{gap:10px;padding-left:16px;padding-right:16px}.brand{gap:8px;font-size:.91rem}.brand small{font-size:.65rem}.brand img{width:30px;height:30px}.header-actions{gap:5px}}

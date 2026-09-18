@@ -14,7 +14,7 @@ export function prettyDate(value, short = false) {
 export function blankEntry(date) { return { date, mood:null, notes:'', symptoms:'', medicines:'', questions:'', updatedAt:null }; }
 export function hasContent(entry) { return !!entry.mood || fields.some(key => entry[key].trim()); }
 export function validateBackup(value) {
-  if (!value || value.app !== 'my-health-diary' || ![1,2].includes(value.version) || !Array.isArray(value.entries) || value.entries.length > 40000) throw new Error('This is not a supported My health diary backup. Choose a backup downloaded from this app.');
+  if (!value || value.app !== 'my-health-diary' || ![1,2].includes(value.version) || !Array.isArray(value.entries) || value.entries.length > 40000) throw new Error('This is not a supported Your Health Diary backup. Choose a backup downloaded from this app.');
   const dates = new Set();
   return value.entries.map(entry => {
     if (!entry || !validDate(entry.date) || dates.has(entry.date) || !(entry.mood === null || Number.isInteger(entry.mood) && entry.mood >= 1 && entry.mood <= 5) || fields.some(key => typeof entry[key] !== 'string' || entry[key].length > (key === 'notes' ? 100000 : 20000))) throw new Error('This backup has invalid or duplicate entries. Nothing was restored.');
@@ -23,7 +23,7 @@ export function validateBackup(value) {
   });
 }
 export function makeReportText(entries, from, to, visits = []) {
-  const lines = ['MY HEALTH DIARY', `${prettyDate(from,true)} – ${prettyDate(to,true)}`, `${entries.length} recorded ${entries.length === 1 ? 'day' : 'days'}`, 'Personal notes, as written. Days without an entry are not included.', ''];
+  const lines = ['YOUR HEALTH DIARY', `${prettyDate(from,true)} – ${prettyDate(to,true)}`, `${entries.length} recorded ${entries.length === 1 ? 'day' : 'days'}`, 'Personal notes, as written. Days without an entry are not included.', ''];
   const questions = entries.filter(entry => entry.questions.trim());
   if (visits.length) {
     lines.push('DOCTOR VISITS');

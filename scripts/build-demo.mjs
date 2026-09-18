@@ -14,12 +14,13 @@ export async function buildDemo(output) {
     return text.replace(before,after);
   };
   let html=await readFile(new URL('index.html',output),'utf8');
-  html=replace(html,'<title>My health diary</title>','<title>Health Diary — interactive demo</title>');
+  html=replace(html,'<title>Your Health Diary</title>','<title>Your Health Diary — public demo</title>');
   html=replace(html,'<link rel="stylesheet" href="/styles.css">','<link rel="stylesheet" href="/styles.css">\n  <link rel="stylesheet" href="/demo.css">');
+  html=replace(html,'content="Your diary"','content="Diary demo"');
   html=replace(html,'<body>','<body>\n  <div class="demo-session-label">Demo only · fictional records · edits reset on refresh</div>');
   html=replace(html,'<main>','<main>\n'+await readFile(new URL('banner.html',demo),'utf8'));
   html=replace(html,'Only on this device','Demo · temporary edits');
-  html=replace(html,'A little note. A clearer picture.','Interactive demo · made-up details');
+  html=replace(html,'Your own copy · your records','PUBLIC DEMO · fictional data');
   html=replace(html,'Your notes stay in this browser. Back them up from <button class="inline-button" id="backup-shortcut">Settings</button> so you don’t lose them if your phone or browser data is cleared.','This demo resets on refresh. Try a sample backup in <button class="inline-button" id="backup-shortcut">Settings</button>. Deploy your own copy to keep real notes.');
   html=replace(html,'Add photos or PDFs. Up to 5 files, 10 MB each (30 MB per visit). Saved only on this device.','Uploads are disabled in this demo. Open the fictional attachment below. Your own diary supports photos and PDFs.');
   html=replace(html,'Entries, saved visits, and prescriptions stay on this device and don’t sync. Your phone and computer have separate diaries. All saved records are included in your backup. Download one regularly and before changing phones or clearing browser data.','Try downloading a backup of the fictional samples. Demo records and drafts live only in page memory and reset on refresh; your theme preference is remembered. Real backup imports are disabled. In your own deployed diary, records persist in this browser, and backup / restore lets you move them to another device.');
@@ -41,7 +42,7 @@ export async function buildDemo(output) {
   visits=visits.replaceAll('Visit and prescriptions saved on this device.','Visit saved for this demo. Resets on refresh.').replaceAll('navigator.storage?.persist?.().catch(()=>{});','');
   await writeFile(new URL('visits.js',output),visits);
   const manifest=JSON.parse(await readFile(new URL('manifest.webmanifest',output),'utf8'));
-  manifest.name='Health Diary Demo';manifest.short_name='Diary demo';
+  manifest.name='Your Health Diary — Demo';manifest.short_name='Diary demo';
   await writeFile(new URL('manifest.webmanifest',output),JSON.stringify(manifest,null,2)+'\n');
   let sw=await readFile(new URL('sw.js',output),'utf8');
   sw=replace(sw,"const ASSETS = [","const ASSETS = ['/demo.css', '/demo.js', '/sample-prescription.png', ");

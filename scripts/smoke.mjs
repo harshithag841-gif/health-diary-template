@@ -121,7 +121,7 @@ try {
   await page.locator('#confirm-ok').click();
   await page.getByText('Backup restored.',{exact:true}).waitFor();
   await page.locator('#import-file').setInputFiles({name:'invalid.json',mimeType:'application/json',buffer:Buffer.from('{"app":"invalid"}')});
-  await page.getByText('This is not a supported My health diary backup. Choose a backup downloaded from this app.',{exact:true}).waitFor();
+  await page.getByText('This is not a supported Your Health Diary backup. Choose a backup downloaded from this app.',{exact:true}).waitFor();
   await page.locator('#close-settings').click();
   assert.ok((await page.locator('#notes').inputValue()).includes('Offline note'));
   check('Backup download, delete confirmation, restore, and invalid-file protection offline');

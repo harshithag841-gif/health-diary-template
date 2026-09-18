@@ -136,7 +136,7 @@ async function renderReport() {
   }
   catch (error) { showError(error.message); return; }
   $('print-report').disabled=$('download-report').disabled=!reportEntries.length&&!reportVisits.length;
-  container.append(element('h2','My health diary'),element('p',`${prettyDate(from,true)} – ${prettyDate(to,true)} · ${reportEntries.length} recorded ${reportEntries.length===1?'day':'days'}`,'report-meta'));
+  container.append(element('h2','Your Health Diary'),element('p',`${prettyDate(from,true)} – ${prettyDate(to,true)} · ${reportEntries.length} recorded ${reportEntries.length===1?'day':'days'}`,'report-meta'));
   if (!reportEntries.length && !reportVisits.length) { container.append(element('p','No entries or visits in this date range yet.')); return; }
   container.append(element('p','Personal notes, as written. Days without an entry are not included.','report-meta'));
   if(reportVisits.length){

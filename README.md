@@ -1,4 +1,4 @@
-# Health Diary
+# Your Health Diary
 
 A small, local-first health diary for remembering what happened between doctor visits. Write on your phone, attach prescriptions, and take a useful summary to your next appointment.
 
