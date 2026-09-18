@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Health Diary — Product brief &amp; PRD | Harshitha Gangappa</title>
+<meta name="description" content="An open-source, local-first health diary. Daily notes, doctor visits, prescriptions and offline access. Read the PRD and deploy your own copy on Vercel.">
+<meta name="author" content="Harshitha Gangappa"><meta name="theme-color" content="#245b55">
+<meta property="og:title" content="Health Diary: a little less to remember.">
+<meta property="og:description" content="Daily notes, doctor visits and prescriptions, stored in your browser. An open-source template you can make your own.">
+<meta property="og:type" content="article"><meta property="og:url" content="https://harshithagangappa.com/products/health-diary-prd.html">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://harshithagangappa.com/products/health-diary-prd.html">
+<link rel="stylesheet" href="prd.css">
+</head>
+<body>
+<header><a class="brand" href="https://harshithagangappa.com/#products">Harshitha Gangappa <span aria-hidden="true"> / </span> Projects</a><a href="#build">How it works ↓</a></header>
+<main>
+<div class="hero">
+<p class="eyebrow">Health Diary · Product brief &amp; PRD · v1.0</p>
+<h1>A little less<br>to remember.</h1>
+<p class="lead">A simple place to record what happened today, keep prescriptions, and prepare for your next doctor visit. Your diary content stays in your browser.</p>
+<div class="pills"><span class="pill">Local-first</span><span class="pill">Works offline</span><span class="pill">Open source · MIT</span><span class="pill">No account required</span></div>
+<div class="actions"><a class="button" href="https://github.com/harshithag841-gif/health-diary-template">Get the template ↗</a><a class="button secondary" href="https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fharshithag841-gif%2Fhealth-diary-template">Deploy your copy ↗</a></div>
+</div>
+<div class="intro"><p><strong>The starting point:</strong> by the time a doctor asks “What happened since your last visit?”, small but useful details are easy to forget. I wanted a quiet daily record that I could own and revisit.</p></div>
+<section aria-labelledby="why"><p class="eyebrow">01 / Problem &amp; goal</p><h2 id="why">Remember the details. Keep control of the record.</h2><p>For someone managing their own health notes, the job is simple: capture events as they happen and recall them at an appointment. Success means an entry can be saved on a phone, found later without internet, and included in a report the person chooses to share.</p><p class="small">Scope: a personal record keeper. It does not diagnose, recommend treatment, connect to hospitals, or replace a clinician or an emergency service.</p></section>
+<section aria-labelledby="experience"><p class="eyebrow">02 / The experience</p><h2 id="experience">Write. Put it away. Come back when you need it.</h2><div class="grid">
+<article class="card"><h3>Daily diary</h3><p>Notes autosave on the device. Add optional mood, symptoms, medicines and questions. Collapse a finished note; reopen it to add more. Search and edit past entries.</p></article>
+<article class="card"><h3>Doctor visits</h3><p>Save the doctor, date and optional time. Keep more than one visit per day. Attach prescription photos or PDFs; view or download them offline.</p></article>
+<article class="card"><h3>Appointment report</h3><p>Choose a date range to gather notes, visits and questions. Print or save as PDF through the browser, or download text. Prescription files remain separate.</p></article>
+<article class="card"><h3>A copy you control</h3><p>Download a backup containing notes, visits and prescription files. Restore it on another browser or device when you choose. There is no automatic sync.</p></article>
+</div></section>
+<section aria-labelledby="build" id="build-section"><p class="eyebrow">03 / How it is built</p><h2 id="build">A small app, with storage on your device.</h2>
+<div class="flow" aria-label="Data flow: Vercel serves app files to your browser; your browser stores health records on the device."><div><strong>Vercel</strong><span>Serves app code over HTTPS</span></div><span class="arrow" aria-hidden="true">→</span><div><strong>Your browser</strong><span>HTML, CSS and JavaScript</span></div><span class="arrow" aria-hidden="true">→</span><div><strong>On-device storage</strong><span>Notes, visits and prescriptions</span></div></div>
+<p>The interface uses plain HTML, CSS and JavaScript with no runtime dependencies. IndexedDB stores entries, visits and prescription blobs separately. localStorage holds drafts and display preferences. A service worker caches the app for offline use; a web app manifest enables home-screen installation.</p><p>A small Node.js build script checks the JavaScript and versions the offline cache. Updates wait for old app windows to close. Versioned JSON backups support older diary-only files; restore validates records and commits them together. Vercel serves static files with security headers and a restrictive Content Security Policy.</p><p class="small">There is no health-data backend, account system, analytics, advertising, AI processing or third-party runtime request in the diary.</p></section>
+<section aria-labelledby="requirements"><p class="eyebrow">04 / Requirements &amp; checks</p><h2 id="requirements">Small features, checked end to end.</h2><div class="table-wrap"><table><thead><tr><th scope="col">Requirement</th><th scope="col">Acceptance check</th></tr></thead><tbody>
+<tr><td>Reliable capture</td><td>Saved notes survive reload and browser restart; conflicting edits are detected. Collapse preferences are remembered per date.</td></tr>
+<tr><td>Offline access</td><td>After the first online setup, launch, write, search, view prescriptions and export backups with the network disconnected.</td></tr>
+<tr><td>Prescription files</td><td>Original bytes survive save, download and backup restore. Up to 5 files per visit, 10 MB each, 30 MB per visit.</td></tr>
+<tr><td>Safe restoration</td><td>Keep existing diary records during database upgrades, reject malformed backups, and remove orphaned files after deletion. Import limit: 150 MB.</td></tr>
+<tr><td>Phone usability</td><td>Layouts checked at 320, 390, 768 and 1440 px, with keyboard controls and readable save status.</td></tr>
+</tbody></table></div><p class="small">Browser smoke checks use synthetic records in isolated profiles. These are functional checks, not an independent security audit or a clinical validation. Progress is assessed through tests and voluntary feedback; the app does not collect usage metrics.</p></section>
+<section aria-labelledby="privacy"><p class="eyebrow">05 / Privacy &amp; trade-offs</p><h2 id="privacy">Local-first is a design choice, not a security guarantee.</h2><ul><li>Health content is not uploaded by the app. The hosting provider still receives ordinary connection metadata, such as IP addresses, when serving app files.</li><li>Storage and exported backups are not encrypted by this app. Use a device lock and keep backups private. Browser data can be cleared or evicted.</li><li>Data belongs to the current browser and website origin. A new device, browser or domain needs a backup and restore. Use your stable production URL.</li><li>Deploy on a separate origin from other sites and review updates. Whoever controls the hosted code can change what it does.</li></ul><p class="note">The open-source template contains no personal records or private deployment configuration. Everyone starts with an empty diary in their own browser. No health records should be included in GitHub issues or contributions.</p></section>
+<section aria-labelledby="own"><p class="eyebrow">06 / Make it yours</p><h2 id="own">Copy the template. Deploy. Start writing.</h2><ol><li><a href="https://github.com/harshithag841-gif/health-diary-template/generate">Use the GitHub template</a> to create your own repository. Choose private if you want private source. <a href="https://github.com/harshithag841-gif/health-diary-template/fork">Fork it</a> if you want a public copy connected for contributions.</li><li>Import your copy into Vercel. The included configuration builds with <code>node scripts/build.mjs</code> and serves <code>dist/</code>. No database or environment variables are needed.</li><li>Open the production URL online and wait for <strong>Ready offline</strong>. Add it to your home screen from Safari or Chrome. Keep regular backups.</li></ol><p class="small">Hosting is subject to your provider's plan and limits. The full README includes local setup, attachment formats, testing and contribution instructions. The template is MIT-licensed; keep the license notice when sharing it.</p><div class="actions"><a class="button" href="https://github.com/harshithag841-gif/health-diary-template">Explore the source ↗</a><a class="button secondary" href="https://harshithagangappa.com/#products">More projects</a></div></section>
+</main>
+<footer><p>Built by Harshitha Gangappa · September 2026 · HTML PRD v1.0</p><p>This page explains the product. It does not collect or display diary records.</p></footer>
+</body></html>

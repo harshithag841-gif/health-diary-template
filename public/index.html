@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#245b55">
+  <meta name="description" content="A simple, private daily health diary. Remember what happened, even offline.">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <title>My health diary</title>
+  <link rel="icon" href="/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/app.js"></script>
+</head>
+<body>
+  <header class="header">
+    <a class="brand" href="#today" aria-label="My health diary, today"><img src="/icon.svg" width="38" height="38" alt=""><span>My health diary<small>A little note. A clearer picture.</small></span></a>
+    <button id="settings-button" class="icon-button" aria-label="Settings and backup" title="Settings and backup"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M4 7h16M4 17h16"/><circle cx="9" cy="7" r="3"/><circle cx="15" cy="17" r="3"/></svg></button>
+  </header>
+  <main>
+    <div class="topline"><span class="device-note">Only on this device</span><span id="connection-status" role="status">Preparing offline access…</span></div>
+    <nav class="tabs" aria-label="Diary views">
+      <a href="#today" data-view="today" aria-current="page">Write a note</a>
+      <a href="#journal" data-view="journal">Past entries</a>
+      <a href="#doctor" data-view="doctor">Doctor visit</a>
+    </nav>
+    <div id="error-banner" class="error-banner" role="alert" hidden></div>
+    <section id="today-view" aria-labelledby="entry-heading">
+      <div class="section-heading"><div><p class="eyebrow" id="day-label">TODAY</p><h1 id="entry-heading">How was your day?</h1></div><label class="date-picker"><span class="sr-only">Entry date</span><input id="entry-date" type="date" required></label></div>
+      <p class="intro">Write it down now. Remember it when it matters.</p>
+      <form id="entry-form">
+        <fieldset class="mood-field"><legend>How are you feeling? <span class="optional">Optional</span></legend><div class="moods">
+          <button type="button" class="mood" data-mood="1" aria-pressed="false"><span aria-hidden="true">☹</span>Rough</button>
+          <button type="button" class="mood" data-mood="2" aria-pressed="false"><span aria-hidden="true">◔</span>Not great</button>
+          <button type="button" class="mood" data-mood="3" aria-pressed="false"><span aria-hidden="true">◑</span>Okay</button>
+          <button type="button" class="mood" data-mood="4" aria-pressed="false"><span aria-hidden="true">☺</span>Good</button>
+          <button type="button" class="mood" data-mood="5" aria-pressed="false"><span aria-hidden="true">☀</span>Great</button>
+        </div></fieldset>
+        <div class="writing-card"><details id="notes-details" open><summary><span id="notes-label">What happened today?</span><span id="notes-toggle-label" class="disclosure-action">Collapse</span></summary><div class="writing-heading"><span class="small">Add to your day whenever you like.</span><button type="button" id="add-time" class="text-button">+ Add time</button></div><textarea id="notes" aria-labelledby="notes-label" maxlength="100000" rows="8" placeholder="Anything you want to remember…&#10;&#10;How you felt, when something started, what helped, or something you want to tell your doctor."></textarea></details><div class="writing-footer"><span id="notes-hint">Small details count, too.</span><span id="save-status" role="status">Ready when you are</span></div></div>
+        <details id="extra-details" class="extra-details"><summary>A few more details <span>Optional</span></summary><div class="extra-fields">
+          <label for="symptoms">Symptoms<textarea id="symptoms" maxlength="20000" rows="3" placeholder="What, when, how strong, and how long?"></textarea></label>
+          <label for="medicines">Medicines &amp; treatments<textarea id="medicines" maxlength="20000" rows="3" placeholder="Name, dose, time, and anything you noticed"></textarea></label>
+          <label for="questions">Questions for my doctor<textarea id="questions" maxlength="20000" rows="3" placeholder="What would you like to ask at your next visit?"></textarea></label>
+        </div></details>
+        <div class="entry-actions"><button type="button" id="delete-entry" class="text-button danger" hidden>Delete this entry</button><button type="submit" id="save-entry" class="primary">Save entry <span aria-hidden="true">✓</span></button></div>
+      </form>
+      <p class="quiet-note">Your notes stay in this browser. Back them up from <button class="inline-button" id="backup-shortcut">Settings</button> so you don’t lose them if your phone or browser data is cleared.</p>
+    </section>
+    <section id="journal-view" aria-labelledby="journal-heading" hidden>
+      <div class="section-heading"><div><p class="eyebrow">ONE DAY AT A TIME</p><h1 id="journal-heading">Your past entries</h1></div></div>
+      <p class="intro">The details you don’t have to keep in your head.</p>
+      <label class="search"><span class="sr-only">Search entries</span><input type="search" id="search" placeholder="Search your notes, symptoms, medicines…"></label>
+      <p id="entry-count" class="result-count" aria-live="polite"></p><div id="entries-list"></div>
+    </section>
+    <section id="doctor-view" aria-labelledby="doctor-heading" hidden>
+      <p class="eyebrow">TAKE YOUR NOTES WITH YOU</p><h1 id="doctor-heading">Doctor visits</h1><p class="intro">Your visits, prescriptions, and notes in one place.</p>
+      <section id="visits-section" aria-label="Saved doctor visits">
+        <details id="visit-editor" class="visit-editor"><summary><span id="visit-form-title">Add a doctor visit</span><span>+</span></summary>
+          <form id="visit-form"><fieldset id="visit-fields" class="visit-fields">
+            <label for="visit-doctor">Doctor’s name<input id="visit-doctor" type="text" maxlength="200" required placeholder="e.g. Dr. Mehta" autocomplete="off"></label>
+            <div class="range"><label for="visit-date">Visit date<input id="visit-date" type="date" required></label><label for="visit-time">Time <span class="optional">Optional</span><input id="visit-time" type="time"></label></div>
+            <div><label for="prescription-files">Prescriptions <span class="optional">Optional</span></label><p class="small">Add photos or PDFs. Up to 5 files, 10 MB each (30 MB per visit). Saved only on this device.</p><input id="prescription-files" type="file" multiple accept="image/jpeg,image/png,image/webp,image/gif,image/heic,image/heif,application/pdf"><ul id="pending-prescriptions" class="file-list"></ul></div>
+            <p id="visit-error" class="error-banner" role="alert" hidden></p><div class="button-row"><button type="submit" id="save-visit" class="primary">Save visit</button><button type="button" id="cancel-visit" class="secondary">Cancel</button><span id="visit-save-status" class="small" role="status"></span></div>
+          </fieldset></form>
+        </details>
+        <div id="visits-list" aria-live="polite"></div>
+      </section>
+      <h2 class="report-heading">Notes for your appointment</h2><p class="small">Choose dates to print or download your diary and visit details.</p>
+      <div class="report-controls"><div class="range"><label>From<input id="report-from" type="date" required></label><label>To<input id="report-to" type="date" required></label></div><div class="report-actions"><button id="print-report" class="primary">Print / Save PDF</button><button id="download-report" class="secondary">Download text</button></div></div>
+      <div id="report-content" class="report-content"></div>
+    </section>
+    <footer class="footer">A place to remember, at your own pace.</footer>
+  </main>
+  <dialog id="settings-dialog" aria-labelledby="settings-title"><div class="dialog-heading"><h2 id="settings-title">Your diary</h2><button class="icon-button" id="close-settings" aria-label="Close settings">×</button></div><div class="dialog-body">
+    <section><h3>Keep a copy</h3><p>Entries, saved visits, and prescriptions stay on this device and don’t sync. They are all included in your backup. Download one regularly and before changing phones or clearing browser data.</p><div class="button-row"><button id="export-backup" class="primary">Download backup</button><button id="import-backup" class="secondary">Restore backup</button></div><input type="file" id="import-file" accept=".json,application/json" hidden><p class="small" id="backup-date">No backup downloaded yet.</p><p class="small">Backup files contain your health notes and prescriptions. Keep them somewhere private.</p></section>
+    <section><h3>Use it like an app</h3><button id="install-app" class="secondary" hidden>Add to home screen</button><p><strong>iPhone:</strong> open this page in Safari, tap Share, then Add to Home Screen.</p><p><strong>Android:</strong> open this page in Chrome, tap the menu, then Install app or Add to Home screen.</p><p class="small">Open it online once and wait for “Ready offline”. Then you can write and read without internet. Use the same browser or installed app for your entries.</p></section>
+    <section><h3>Just for you</h3><p>No account, ads, or analytics. Your entries are not sent to a server. Anyone using this unlocked browser can read them, so use your phone’s screen lock. Avoid private/incognito mode for your diary.</p></section>
+  </div></dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"><div class="dialog-body"><h2 id="confirm-title">Confirm</h2><p id="confirm-message"></p><div class="button-row"><button id="confirm-cancel" class="secondary">Cancel</button><button id="confirm-ok" class="primary">Continue</button></div></div></dialog>
+  <dialog id="prescription-dialog" aria-labelledby="prescription-title"><div class="dialog-heading"><h2 id="prescription-title">Prescription</h2><button type="button" id="close-prescription" class="icon-button" aria-label="Close prescription">×</button></div><div class="dialog-body"><img id="prescription-image" alt="Your saved prescription" hidden><p id="prescription-preview-note" class="small" hidden></p><div class="button-row"><a id="prescription-open" class="secondary" target="_blank" rel="noopener noreferrer" hidden>Open file</a><a id="prescription-download" class="primary" download>Download prescription</a></div></div></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+  <noscript><p class="error-banner">Please enable JavaScript to write and save your diary.</p></noscript>
+</body>
+</html>

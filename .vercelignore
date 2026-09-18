@@ -1,0 +1,10 @@
+test-results/
+scripts/*smoke.mjs
+.git/
+.DS_Store
+.env*
+.vercel/
+node_modules/
+dist/
+.release/
+deliverables/
