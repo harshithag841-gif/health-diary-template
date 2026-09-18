@@ -2,7 +2,7 @@
 
 A small, local-first health diary for remembering what happened between doctor visits. Write on your phone, attach prescriptions, and take a useful summary to your next appointment.
 
-**[Read the HTML PRD](https://harshithagangappa.com/products/health-diary-prd.html)** · **[Use this template](https://github.com/harshithag841-gif/health-diary-template/generate)** · **[Fork the code](https://github.com/harshithag841-gif/health-diary-template/fork)** · **[Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fharshithag841-gif%2Fhealth-diary-template)**
+**[Try the interactive demo](https://health-diary-demo-eight.vercel.app/)** · **[Read the HTML PRD](https://harshithagangappa.com/products/health-diary-prd.html)** · **[Use this template](https://github.com/harshithag841-gif/health-diary-template/generate)** · **[Fork the code](https://github.com/harshithag841-gif/health-diary-template/fork)** · **[Deploy to Vercel](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fharshithag841-gif%2Fhealth-diary-template)**
 
 Built by [Harshitha Gangappa](https://harshithagangappa.com/#products). This is a clean, MIT-licensed template. It contains no personal diary records, prescriptions, credentials, or private deployment configuration.
 
@@ -16,6 +16,14 @@ Built by [Harshitha Gangappa](https://harshithagangappa.com/#products). This is 
 - Create an appointment report for a date range; print/save as PDF or download text.
 - Download and restore a JSON backup, including prescription files.
 - Install on your home screen as a progressive web app (PWA).
+
+## Try it before deploying
+
+[Open the interactive demo](https://health-diary-demo-eight.vercel.app/) with no account or deployment. It includes four fictional diary days, two sample doctor visits, a clearly marked dummy attachment, a six-step guided tour and tap-to-open tips. Try search, editing, light/dark mode and the appointment report.
+
+Demo edits live only in memory in that page and reset on refresh or **Reset demo**. Real file uploads and backup imports are disabled; only the theme preference is remembered. Use made-up details. The demo runs on a separate origin from anyone’s personal diary and does not upload demo edits.
+
+**Fork opens the code, not the running app.** To keep real notes, deploy your own copy below. An ordinary template build starts empty and stores your records in your browser. The demo’s sample data is included only when explicitly building the demo.
 
 ## Make your own copy
 
@@ -65,9 +73,20 @@ Open `http://localhost:4173`. Build again after changes. Use Settings → App up
 
 Prescription limits: up to 5 files per visit, 10 MB per file, 30 MB per visit. Supported types: JPEG, PNG, WebP, GIF, HEIC/HEIF, and PDF. Preview support depends on your browser; originals can be downloaded. Backup import limit: 150 MB. Reports list prescription filenames; they do not embed the original files. No automatic sync or scheduled backups.
 
-`public/` contains the app. `scripts/build.mjs` checks JavaScript syntax and stamps the service worker version. `scripts/serve.mjs` serves the build with its security headers. `docs/prd.html` and `docs/prd.css` provide a portable product brief: open the HTML directly or host both files together.
+`public/` contains the app. `demo/` contains fictional fixtures, a memory-only storage adapter, and tour assets; it is excluded from ordinary builds. `scripts/build.mjs` checks JavaScript syntax and stamps the service worker version. `scripts/serve.mjs` serves the build with its security headers. `docs/prd.html` and `docs/prd.css` provide a portable product brief: open the HTML directly or host both files together.
 
 An optional, feature-detected WebMCP tool can navigate to a diary date in supporting browsers. Normal operation does not depend on it.
+
+## Run the demo locally
+
+```sh
+node scripts/build.mjs --demo
+node scripts/serve.mjs
+```
+
+Alternatively use `npm run build:demo`. For a separate demo hosting project only, set the build environment variable `HEALTH_DIARY_DEMO=1`. Leave it unset for a real diary. Both build modes output to `dist/`; never switch an existing personal diary origin into demo mode. Host demos and real diaries on different origins.
+
+The demo uses the same interface as the diary but replaces storage with page memory, loads fictional records relative to today, and adds the tour. Refresh resets records while theme choice persists. Its service worker also caches the tour and sample image for offline exploration. Test the demo with `node scripts/demo-smoke.mjs` after a demo build. Rebuild normally before running the regular diary checks.
 
 ## Verification and contributions
 

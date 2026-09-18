@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
+    "build:demo": "node scripts/build.mjs --demo",
     "dev": "node scripts/serve.mjs",
     "start": "node scripts/serve.mjs"
   },
